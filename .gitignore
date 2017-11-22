@@ -1,0 +1,10 @@
+node_modules
+dist
+docs
+tmp
+reports
+.env
+.npmrc
+npm-debug.log
+coverage
+reports

@@ -1,0 +1,24 @@
+<form id={{id}}>
+  {{#if register}}
+	<label {{dataTagPrefix}}-fullname for="fullname">{{fullname}}</label>
+	<input id="{{id}}-fullname" type="text" value="" />
+	<label {{dataTagPrefix}}-error-fullname hidden>{{missingFullname}}</label>
+	</br>
+  {{/if}}
+  <label {{dataTagPrefix}}-username for="username">{{username}}</label>
+  <input id="{{id}}-username" type="text" value="" />
+  <label {{dataTagPrefix}}-error-username hidden>{{missingUsername}}</label>
+  </br>
+  <label {{dataTagPrefix}}-password for="password">{{password}}</label>
+  <input id="{{id}}-password" type="password" value="" />
+  <label {{dataTagPrefix}}-error-password hidden>{{missingPassword}}</label>
+  </br>
+  <input id="{{id}}-submit" type="submit" value="{{submit}}"
+  </br>
+  <label {{dataTagPrefix}}-error hidden>{{submitError}}</label>
+</form>
+<!-- {{#if registerRoute}} -->
+  <!-- <a {{dataTagPrefix}}-register-route href="webpack-dev-server/bundle#{{registerRoute}}">{{registerMessage}}</a> -->
+<!-- {{else}} -->
+  <!-- <a {{dataTagPrefix}}-login-route href="webpack-dev-server/bundle#{{loginRoute}}">{{cancelMessage}}</a> -->
+<!-- {{/if}} -->
