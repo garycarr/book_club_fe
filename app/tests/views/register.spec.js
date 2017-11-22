@@ -56,8 +56,7 @@ describe('Register view test', function () {
 
         registerView.render();
 
-        let stub = sinon.stub(registerView, 'postRegister', function () {});
-
+        let stub = sinon.spy(registerView, 'postRegister');
         registerView.$el.find('#register-username').val(username);
         registerView.$el.find('#register-password').val(password);
         registerView.$el.find('#register-fullname').val(fullname);
@@ -88,7 +87,7 @@ describe('Register view test', function () {
         expect(ajaxSpy.getCall(0).args[0].type).toBe('POST');
         expect(ajaxSpy.getCall(0).args[0].contentType).toBe('application/json');
         expect(ajaxSpy.getCall(0).args[0].dataType).toBe('json');
-        expect(ajaxSpy.getCall(0).args[0].url).toBe(REGISTER_STRINGS.URL);
+        expect(ajaxSpy.getCall(0).args[0].url).toBe(REGISTER_STRINGS.PATH);
         let data = JSON.parse(ajaxSpy.getCall(0).args[0].data);
         expect(data.username).toBe(lowerCaseUsername);
         expect(data.password).toBe(password);

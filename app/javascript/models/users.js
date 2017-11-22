@@ -16,7 +16,7 @@ export default Model.extend({
         fullname: ''
     },
     url: function () {
-        return loginRegisterMixin.url(REGISTER_STRINGS.URL, this.id);
+        return loginRegisterMixin.url(REGISTER_STRINGS.PATH, this.id);
     },
     idAttribute: '_id',
     validate: function (attrs) {

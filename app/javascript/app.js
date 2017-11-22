@@ -5,10 +5,10 @@ import AppRouter     from './routers/router';
 import AppController from './controllers/controller';
 
 export default Marionette.Application.extend({
-  /**
-   * Marionette callback called when start is called on the application
-   * instance.
-   */
+    /**
+    * Marionette callback called when start is called on the application
+    * instance.
+    */
     onStart () {
         this.layoutView = new LayoutView();
         this.layoutView.render();

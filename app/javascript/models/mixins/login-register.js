@@ -23,7 +23,7 @@ export default {
 
     url: function (urlString, id) {
         if (id) {
-            urlString += id;
+            urlString += `/${id}`;
         }
         return urlString;
     }

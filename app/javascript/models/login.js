@@ -14,8 +14,7 @@ export default Model.extend({
         password: ''
     },
     url: function () {
-        let url = `api/${LOGIN_STRINGS.URL}`;
-        return loginRegisterMixin.url(url, this.id);
+        return loginRegisterMixin.url(`${LOGIN_STRINGS.PATH}`, this.id);
     },
     validate: function (attrs) {
         return loginRegisterMixin.validate(attrs);

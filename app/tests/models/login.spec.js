@@ -43,12 +43,4 @@ describe('Login model test', function () {
         expect(user.isValid(true)).toBe(true);
     });
 
-    // it('should test url', function () {
-    //     let id = 'abc123',
-    //         user = new Login();
-    //     expect(user.url()).toBe(LOGIN_STRINGS.URL);
-    //     user.set('id', id);
-    //     expect(user.url()).toBe(`${LOGIN_STRINGS.URL}${id}`);
-    // });
-
 });

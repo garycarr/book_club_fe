@@ -2,12 +2,12 @@ import mn from 'backbone.marionette';
 import loginModel from '../models/login';
 import template from '../templates/partials/login-register.hbs';
 import loginRegisterMixin from './mixins/login-register';
-import Radio from 'backbone.radio';
+// import Radio from 'backbone.radio';
 // import Backbone from 'backbone';
 
 import { LOGIN_STRINGS } from '../common/strings';
 
-const channel = Radio.channel('application');
+// const channel = Radio.channel('application');
 
 export default mn.View.extend({
     tagName: 'div',
@@ -60,17 +60,21 @@ export default mn.View.extend({
             asyncBool = true;
         }
 
-        let user = new loginModel(attr);
-        user.save({ attr }, {
+        let login = new loginModel(attr);
+        login.save({ attr }, {
             async: asyncBool,
-            success: function () {
+            success: function (login) {
+                // While there is nothing to redirect too just confirm success
+                let selector = that.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error]`);
+                selector.removeAttr('hidden');
+                selector.text(`Sign in successful. Welcome ${login.attributes.username}`);
                 // Backbone.history.navigate('homepage'); // TODO - why does FE app have this?
-                channel.trigger('nav:homepage');
+                // channel.trigger('nav:homepage');
             },
             error: function (ignore, response) {
                 let selector = that.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error]`);
                 selector.removeAttr('hidden');
-                if (response.status !== 400) {
+                if (response.status !== 401) {
                     let errorMessage = `StatusCode: ${response.status}, Text: ${response.statusText}`;
                     selector.text(errorMessage);
                 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export const HEADER_STRINGS = {
     TITLE: 'Book Club!'
 };
@@ -12,9 +13,9 @@ export const LOGIN_STRINGS = {
     LOGIN_ERROR: 'The username or password was incorrect',
     PASSWORD: 'Password',
     PASSWORD_MISSING: 'Please enter correct length password',
+    PATH: 'api/login',
     SUBMIT: 'Login',
     REGISTER_ROUTE: '#register',
-    URL: 'login/',
     USERNAME: 'Username',
     USERNAME_MISSING: 'Please enter correct length username'
 };
@@ -22,7 +23,7 @@ export const LOGIN_STRINGS = {
 export const USER_STRINGS = {
     DATA_TAG_PREFIX: 'data-user',
     ID: 'user',
-    URL: 'api/users/'
+    PATH: 'api/users'
 };
 
 export const REGISTER_STRINGS = {
@@ -30,9 +31,9 @@ export const REGISTER_STRINGS = {
     ID: 'register',
     NAME: 'Name',
     PASSWORD: 'Password',
+    PATH: 'api/users',
     SUBMIT: 'Register',
     USERNAME: 'Username',
-    URL: 'api/users/',
     REGISTER_ERROR: 'The registration failed',
     PASSWORD_MISSING: 'Please enter correct length password',
     USERNAME_MISSING: 'Please enter correct length username',

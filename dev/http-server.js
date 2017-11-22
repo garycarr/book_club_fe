@@ -1,7 +1,7 @@
 /*eslint-disable*/
 require('dotenv').config();
 
-var chalk = require('chalk'),
+let chalk = require('chalk'),
     httpServer = require('http-server'),
     target = process.argv[2],
     root,
@@ -16,7 +16,7 @@ root = 'reports/coverage/html/';
 port = process.env.PORT_COVERAGE;
 
 // create our server
-var server = httpServer.createServer({
+let server = httpServer.createServer({
     root: root
 });
 

@@ -61,9 +61,9 @@ describe('Users model test', function () {
     it('should test url', function () {
         let id = 'abc123',
             user = new Users();
-        expect(user.url()).toBe(USER_STRINGS.URL);
+        expect(user.url()).toBe(USER_STRINGS.PATH);
         user.set('id', id);
-        expect(`${user.url()}${id}`).toBe(`${USER_STRINGS.URL}${id}`);
+        expect(`${user.url()}${id}`).toBe(`${USER_STRINGS.PATH}${id}`);
     });
 
 });

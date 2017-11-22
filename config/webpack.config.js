@@ -18,21 +18,22 @@ module.exports = {
         publicPath: '/'
     },
 
-    devtool: "sourcemap",
+    devtool: 'sourcemap',
 
     module: {
-        preLoaders: [
+        rules: [
             // Preloader to check the files before babel-loader has transformed them
             {
                 test: /\.js$/,
                 loader: 'eslint-loader',
+                enforce: 'pre',
                 exclude: /node_modules/
-            }
-        ],
-        loaders: [
+            },
             {
-                test: /\.css$/,
-                loader: 'style!css' },
+                test: /\.hbs$/,
+                enforce: 'pre',
+                loader: 'handlebars-loader'
+            },
             {
                 // Transpiles the javascript files for ES2015 use on browsers
                 test: /\.js$/,
@@ -41,15 +42,14 @@ module.exports = {
                 query: {
                     presets: ['es2015']
                 }
-            },
-            {
-                test: /\.hbs$/,
-                loader: 'handlebars-loader'
-                // query: {
-                //     inlineRequires: '\/images\/',
-                //     helperDirs: [`${dirName}/src/helpers`]
-                // }
             }
+        ],
+        loaders: [
+            {
+                test: /\.css$/,
+                enforce: 'pre',
+                loader: 'style!css'
+            },
         ]
     },
 
@@ -58,11 +58,16 @@ module.exports = {
         port: process.env.PORT_APP,
         inline: true,
         proxy: {
-             '/api/**': process.env.API_PROXY_PROTOCOL +
+             '/api': {
+                 target: process.env.API_PROXY_PROTOCOL +
                         process.env.API_PROXY_HOST +
                         (process.env.API_PROXY_PORT ? ':' + process.env.API_PROXY_PORT : '') +
                         process.env.API_PROXY_PATH,
+
+                pathRewrite: {
+                    '^/api' : ''
+                },
+            },
         },
-        pathRewrite: {'^/api' : ''}
     }
 };

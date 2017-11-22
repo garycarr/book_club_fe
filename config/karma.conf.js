@@ -11,9 +11,6 @@ module.exports = function (config) {
         files: [
             {
                 pattern: '**/tests/**/*.spec.js'
-                // watched: false,
-                // included: true,
-                // served: true
             }
         ],
         // list of files to exclude
@@ -23,9 +20,7 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            // '**/tests/**/*.spec.js': ['webpack', 'sourcemap']
             '**/tests/**/*.spec.js': ['webpack', 'sourcemap']
-            // 'app/javascript/**/*.js': ['coverage', 'webpack']
         },
 
         coverageReporter: {

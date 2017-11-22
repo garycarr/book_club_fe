@@ -64,7 +64,7 @@ describe('Login view test', function () {
 
         loginView.render();
 
-        let stub = sinon.stub(loginView, 'postLogin', function () {});
+        let stub = sinon.spy(loginView, 'postLogin');
 
         loginView.$el.find('#login-username').val(username);
         loginView.$el.find('#login-password').val(password);
