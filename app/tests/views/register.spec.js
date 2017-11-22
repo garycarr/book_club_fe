@@ -1,5 +1,7 @@
 import RegisterView from '../../javascript/views/register';
+import { ENV_CONSTANTS } from '../../javascript/common/constants';
 import { REGISTER_STRINGS } from '../../javascript/common/strings';
+import { REGISTER_CONSTANTS } from '../../javascript/common/constants';
 import { USER_CONSTANTS } from '../../javascript/common/constants';
 import Commmon from '../common';
 import $ from 'jquery';
@@ -74,7 +76,7 @@ describe('Register view test', function () {
             registerView = new RegisterView(),
             upperCaseUsername = 'John';
 
-        this.server.respondWith('POST', REGISTER_STRINGS.URL,
+        this.server.respondWith('POST', REGISTER_CONSTANTS.PATH,
             [200, { 'Content-Type': 'application/json' },
                 `{ "id": "${id}" }`]);
 
@@ -87,7 +89,13 @@ describe('Register view test', function () {
         expect(ajaxSpy.getCall(0).args[0].type).toBe('POST');
         expect(ajaxSpy.getCall(0).args[0].contentType).toBe('application/json');
         expect(ajaxSpy.getCall(0).args[0].dataType).toBe('json');
-        expect(ajaxSpy.getCall(0).args[0].url).toBe(REGISTER_STRINGS.PATH);
+
+        // expect(ajaxSpy.getCall(0).args[0].url).toBe(REGISTER_CONSTANTS.PATH);
+        // Ugly while were hacking in the env
+        let hackedURL = `${ENV_CONSTANTS.API_HOSTNAME}/${REGISTER_CONSTANTS.PATH}`;
+        hackedURL = hackedURL.replace('/api', '');
+        expect(ajaxSpy.getCall(0).args[0].url).toBe(hackedURL);
+
         let data = JSON.parse(ajaxSpy.getCall(0).args[0].data);
         expect(data.username).toBe(lowerCaseUsername);
         expect(data.password).toBe(password);
@@ -101,7 +109,7 @@ describe('Register view test', function () {
             registerView = new RegisterView(),
             username = 'john';
 
-        this.server.respondWith('POST', REGISTER_STRINGS.URL,
+        this.server.respondWith('POST', REGISTER_CONSTANTS.PATH,
             [404, { 'Content-Type': 'application/json' },
                 '']);
 
@@ -124,7 +132,7 @@ describe('Register view test', function () {
             registerView = new RegisterView(),
             username = 'john';
 
-        this.server.respondWith('POST', REGISTER_STRINGS.URL,
+        this.server.respondWith('POST', REGISTER_CONSTANTS.PATH,
             [404, { 'Content-Type': 'application/json' },
                 '']);
 

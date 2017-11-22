@@ -14,4 +14,3 @@ localhost:8001 // Code coverage
 ```
 
 This needs to have https://github.com/garycarr/book_club_be.git for the backend.
-Putting it all into docker is a to do

@@ -1,6 +1,9 @@
 import LoginView from '../../javascript/views/login';
-import { LOGIN_STRINGS } from '../../javascript/common/strings';
+import { ENV_CONSTANTS } from '../../javascript/common/constants';
+import { LOGIN_CONSTANTS } from '../../javascript/common/constants';
 import { USER_CONSTANTS } from '../../javascript/common/constants';
+import { LOGIN_STRINGS } from '../../javascript/common/strings';
+
 import Commmon from '../common';
 import $ from 'jquery';
 
@@ -74,33 +77,37 @@ describe('Login view test', function () {
         sinon.assert.calledWith(stub, { username:username, password:password });
     });
 
-    // it('should successfully login', function () {
-    //     let id = '12b',
-    //         loginView = new LoginView(),
-    //         lowerCaseUsername = 'john',
-    //         password = 'abcdef',
-    //         upperCaseUsername = 'John';
-    //
-    //     this.server.respondWith('POST', LOGIN_STRINGS.URL,
-    //         [200, { 'Content-Type': 'application/json' },
-    //             `{ "id": "${id}" }`]);
-    //
-    //     loginView.render();
-    //
-    //     let ajaxSpy = sinon.spy($, 'ajax');
-    //     loginView.postLogin({ username: upperCaseUsername, password: password }, false);
-    //
-    //     expect(ajaxSpy.calledOnce).toBe(true);
-    //     expect(ajaxSpy.getCall(0).args[0].type).toBe('POST');
-    //     expect(ajaxSpy.getCall(0).args[0].contentType).toBe('application/json');
-    //     expect(ajaxSpy.getCall(0).args[0].dataType).toBe('json');
-    //     expect(ajaxSpy.getCall(0).args[0].url).toBe(LOGIN_STRINGS.URL);
-    //     let data = JSON.parse(ajaxSpy.getCall(0).args[0].data);
-    //     expect(data.username).toBe(lowerCaseUsername);
-    //     expect(data.password).toBe(password);
-    //     ajaxSpy.restore();
-    //     // TODO - actions after login
-    // });
+    it('should successfully login', function () {
+        let id = '12b',
+            loginView = new LoginView(),
+            lowerCaseUsername = 'john',
+            password = 'abcdef',
+            upperCaseUsername = 'John';
+
+        this.server.respondWith('POST', LOGIN_STRINGS.URL,
+            [200, { 'Content-Type': 'application/json' },
+                `{ "id": "${id}" }`]);
+
+        loginView.render();
+
+        let ajaxSpy = sinon.spy($, 'ajax');
+        loginView.postLogin({ username: upperCaseUsername, password: password }, false);
+
+        expect(ajaxSpy.calledOnce).toBe(true);
+        expect(ajaxSpy.getCall(0).args[0].type).toBe('POST');
+        expect(ajaxSpy.getCall(0).args[0].contentType).toBe('application/json');
+        expect(ajaxSpy.getCall(0).args[0].dataType).toBe('json');
+        // expect(ajaxSpy.getCall(0).args[0].url).toBe(LOGIN_CONSTANTS.PATH);
+        // Ugly while were hacking in the env
+        let hackedURL = `${ENV_CONSTANTS.API_HOSTNAME}/${LOGIN_CONSTANTS.PATH}`;
+        hackedURL = hackedURL.replace('/api', '');
+        expect(ajaxSpy.getCall(0).args[0].url).toBe(hackedURL);
+        let data = JSON.parse(ajaxSpy.getCall(0).args[0].data);
+        expect(data.username).toBe(lowerCaseUsername);
+        expect(data.password).toBe(password);
+        ajaxSpy.restore();
+        // TODO - actions after login
+    });
 
     it('should fail to login and display an error', function () {
         let loginView = new LoginView(),

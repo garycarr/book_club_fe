@@ -2,7 +2,7 @@
 
 import { Model } from 'backbone';
 import loginRegisterMixin from './mixins/login-register';
-import { LOGIN_STRINGS } from '../common/strings';
+import { LOGIN_CONSTANTS } from '../common/constants';
 
 /**
  * Model for add context member
@@ -14,7 +14,7 @@ export default Model.extend({
         password: ''
     },
     url: function () {
-        return loginRegisterMixin.url(`${LOGIN_STRINGS.PATH}`, this.id);
+        return loginRegisterMixin.url(`${LOGIN_CONSTANTS.PATH}`, this.id);
     },
     validate: function (attrs) {
         return loginRegisterMixin.validate(attrs);

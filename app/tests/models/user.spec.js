@@ -1,6 +1,6 @@
 import Users from '../../javascript/models/users';
 import { USER_CONSTANTS } from '../../javascript/common/constants';
-import { USER_STRINGS } from '../../javascript/common/strings';
+import { ENV_CONSTANTS } from '../../javascript/common/constants';
 import Commmon from '../common';
 
 describe('Users model test', function () {
@@ -61,9 +61,15 @@ describe('Users model test', function () {
     it('should test url', function () {
         let id = 'abc123',
             user = new Users();
-        expect(user.url()).toBe(USER_STRINGS.PATH);
+        // expect(user.url()).toBe(USER_CONSTANTS.PATH);
+        // Ugly while were hacking in the env
+        let hackedURL = `${ENV_CONSTANTS.API_HOSTNAME}/${USER_CONSTANTS.PATH}`;
+        hackedURL = hackedURL.replace('/api', '');
+        expect(user.url()).toBe(hackedURL);
         user.set('id', id);
-        expect(`${user.url()}${id}`).toBe(`${USER_STRINGS.PATH}${id}`);
+        // expect(`${user.url()}${id}`).toBe(`${USER_CONSTANTS.PATH}${id}`);
+        // Ugly while were hacking in the env
+        expect(`${user.url()}/${id}`).toBe(`${hackedURL}/${id}`);
     });
 
 });

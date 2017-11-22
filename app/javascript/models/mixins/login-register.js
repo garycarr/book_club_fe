@@ -1,4 +1,5 @@
 import { USER_CONSTANTS } from '../../common/constants';
+import { ENV_CONSTANTS } from '../../common/constants';
 import { REGISTER_STRINGS } from '../../common/strings';
 import { Model } from 'backbone';
 
@@ -25,7 +26,14 @@ export default {
         if (id) {
             urlString += `/${id}`;
         }
-        return urlString;
+        // return urlString;
+        // TODO: hack for bundle, remove this for dev.
+        // There should be a rewrite rule for this
+        let hostname = ENV_CONSTANTS.API_HOSTNAME;
+
+        let pathStrippedApi = urlString.replace('api', '');
+        let hackedURL = `${hostname}${pathStrippedApi}`;
+        return hackedURL;
     }
 
 };

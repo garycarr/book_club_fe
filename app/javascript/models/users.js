@@ -3,6 +3,7 @@
 import { Model } from 'backbone';
 import loginRegisterMixin from './mixins/login-register';
 import { USER_CONSTANTS } from '../common/constants';
+import { REGISTER_CONSTANTS } from '../common/constants';
 import { REGISTER_STRINGS } from '../common/strings';
 
 /**
@@ -16,7 +17,7 @@ export default Model.extend({
         fullname: ''
     },
     url: function () {
-        return loginRegisterMixin.url(REGISTER_STRINGS.PATH, this.id);
+        return loginRegisterMixin.url(REGISTER_CONSTANTS.PATH, this.id);
     },
     idAttribute: '_id',
     validate: function (attrs) {
