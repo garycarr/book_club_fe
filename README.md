@@ -14,3 +14,5 @@ localhost:8001 // Code coverage
 ```
 
 This needs to have https://github.com/garycarr/book_club_be.git for the backend.
+
+To release, run `webpack --config config/webpack.config.js`, zip the dist files, and then upload to cloudfront.
