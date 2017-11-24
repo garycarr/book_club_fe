@@ -2,6 +2,9 @@ import Marionette from 'backbone.marionette';
 import Radio      from 'backbone.radio';
 import RegisterView from '../views/register';
 import LoginView from '../views/login';
+import HomepageView from '../views/homepage';
+
+import { JWT_KEY } from '../common/constants';
 
 /**
  * This controller implements the route methods.
@@ -29,7 +32,10 @@ export default Marionette.Object.extend({
     },
 
     homepage () {
-        // YOU GOT TO THE HOMEPAGE
-        // this.layout.showChildView('content', new RegisterView());
+        if (!localStorage.getItem(JWT_KEY)) {
+            this.login();
+            return;
+        }
+        this.layout.showChildView('content', new HomepageView());
     }
 });

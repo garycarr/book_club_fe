@@ -3,9 +3,9 @@ import loginModel from '../models/login';
 import template from '../templates/partials/login-register.hbs';
 import loginRegisterMixin from './mixins/login-register';
 import Radio from 'backbone.radio';
-// import Backbone from 'backbone';
 
 import { LOGIN_STRINGS } from '../common/strings';
+import { JWT_KEY } from '../common/constants';
 
 const channel = Radio.channel('application');
 
@@ -65,13 +65,9 @@ export default mn.View.extend({
         let login = new loginModel(attr);
         login.save({ attr }, {
             async: asyncBool,
-            success: function (login) {
-                // While there is nothing to redirect too just confirm success
-                let selector = that.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error]`);
-                selector.removeAttr('hidden');
-                selector.text(`Sign in successful. Welcome ${login.attributes.email}`);
-                // Backbone.history.navigate('homepage'); // TODO - why does FE app have this?
-                // channel.trigger('nav:homepage');
+            success: function (ignore, response) {
+                localStorage.setItem(JWT_KEY, response.token);
+                channel.trigger('nav:homepage');
             },
             error: function (ignore, response) {
                 let selector = that.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error]`);

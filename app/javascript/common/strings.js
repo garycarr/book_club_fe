@@ -7,6 +7,13 @@ export const FOOTER_STRINGS = {
     ABOUT: 'Thanks for visiting'
 };
 
+export const HOMEPAGE_STRINGS = {
+    ID: 'homepage',
+    LOGOUT: 'Logout',
+    WELCOME_MESSAGE: 'Welcome back!'
+};
+
+
 export const LOGIN_STRINGS = {
     DATA_TAG_PREFIX: 'data-login',
     EMAIL_MISSING: 'Please enter correct length email',

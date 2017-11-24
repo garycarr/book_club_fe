@@ -13,11 +13,11 @@
   <input id="{{id}}-password" type="password" value="" />
   <label {{dataTagPrefix}}-error-password hidden>{{missingPassword}}</label>
   </br>
-  <input id="{{id}}-submit" type="submit" value="{{submit}}"
+  <button id="{{id}}-submit" type="submit">{{submit}}</button>
   </br>
   <label {{dataTagPrefix}}-error hidden>{{submitError}}</label>
   {{#unless register}}
-	<input id="{{id}}-register" type="submit" value="{{registerButton}}"
+	<button id="{{id}}-register" type="submit">{{registerButton}}</button>
   {{/unless}}
   </br>
 </form>

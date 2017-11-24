@@ -3,6 +3,7 @@ import Backbone from 'backbone';
 import LayoutView     from './views/layout.js';
 import AppRouter     from './routers/router';
 import AppController from './controllers/controller';
+import './auth/backbone-sync-jwt';
 
 export default Marionette.Application.extend({
     /**

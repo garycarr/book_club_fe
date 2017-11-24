@@ -11,14 +11,16 @@ export const USER_CONSTANTS = {
     DISPLAY_NAME_MIN: 2,
     PASSWORD_MAX: LOGIN_CONSTANTS.PASSWORD_MAX,
     PASSWORD_MIN: LOGIN_CONSTANTS.PASSWORD_MIN,
-    PATH: 'api/users',
+    PATH: 'api/user',
     EMAIL_MAX: LOGIN_CONSTANTS.EMAIL_MAX,
     EMAIL_MIN: LOGIN_CONSTANTS.EMAIL_MIN
 };
 
 export const REGISTER_CONSTANTS = {
-    PATH: 'api/users'
+    PATH: 'api/user'
 };
+
+export const JWT_KEY = 'book-jwt';
 
 // TODO: Environment vars should not be constants
 // but they will do for now
