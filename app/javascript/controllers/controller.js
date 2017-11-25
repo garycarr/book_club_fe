@@ -25,6 +25,10 @@ export default Marionette.Object.extend({
     },
 
     login () {
+        if (this.validateJWT()) {
+            this.homepage();
+            return;
+        }
         this.layout.showChildView('content', new LoginView());
     },
 

@@ -25,6 +25,18 @@ describe('controller tests', function () {
     //     childViewLoginSpy.restore();
     // });
 
+    it('should go to home page with a valid JWT', function () {
+        let localStorageStub = sinon.stub(localStorage, 'getItem').returns(validToken);
+        let controller = new Controller({
+            layout: {}
+        });
+        let childViewHomepageStub = sinon.stub(controller, 'homepage');
+        controller.login();
+        expect(childViewHomepageStub.calledOnce).toBe(true);
+        localStorageStub.restore();
+        childViewHomepageStub.restore();
+    });
+
     it('should go to login page with invalid JWT', function () {
         let localStorageStub = sinon.stub(localStorage, 'getItem').returns(invalidToken);
         let controller = new Controller({
