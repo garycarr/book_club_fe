@@ -12,9 +12,9 @@ import { REGISTER_STRINGS } from '../common/strings';
  */
 export default Model.extend({
     defaults: {
-        username: '',
+        email: '',
         password: '',
-        fullname: ''
+        displayName: ''
     },
     url: function () {
         return loginRegisterMixin.url(REGISTER_CONSTANTS.PATH, this.id);
@@ -26,8 +26,8 @@ export default Model.extend({
         if (validateResponse !== false) {
             errors = validateResponse;
         }
-        if (attrs.fullname.length < USER_CONSTANTS.FULLNAME_MIN || attrs.fullname.length > USER_CONSTANTS.FULLNAME_MAX) {
-            errors.push({ name: 'fullname', message: REGISTER_STRINGS.NAME_MISSING });
+        if (attrs.displayName.length < USER_CONSTANTS.DISPLAY_NAME_MIN || attrs.displayName.length > USER_CONSTANTS.DISPLAY_NAME_MAX) {
+            errors.push({ name: 'display-name', message: REGISTER_STRINGS.DISPLAY_NAME_MISSING });
         }
         return errors.length > 0 ? errors : false;
 

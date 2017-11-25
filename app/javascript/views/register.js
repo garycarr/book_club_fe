@@ -5,7 +5,6 @@ import loginRegisterMixin from './mixins/login-register';
 
 import { REGISTER_STRINGS } from '../common/strings';
 
-
 export default mn.View.extend({
     tagName: 'div',
 
@@ -15,12 +14,12 @@ export default mn.View.extend({
         return {
             dataTagPrefix: REGISTER_STRINGS.DATA_TAG_PREFIX,
             id: REGISTER_STRINGS.ID,
-            fullname: REGISTER_STRINGS.FULLNAME,
-            username: REGISTER_STRINGS.USERNAME,
+            displayName: REGISTER_STRINGS.DISPLAY_NAME,
+            email: REGISTER_STRINGS.EMAIL,
             password: REGISTER_STRINGS.PASSWORD,
             submit: REGISTER_STRINGS.SUBMIT,
-            missingUsername: REGISTER_STRINGS.USERNAME_MISSING,
-            missingFullname: REGISTER_STRINGS.FULLNAME_MISSING,
+            missingEmail: REGISTER_STRINGS.EMAIL_MISSING,
+            missingDisplayName: REGISTER_STRINGS.DISPLAY_NAME_MISSING,
             missingPassword: REGISTER_STRINGS.PASSWORD_MISSING,
             submitError: REGISTER_STRINGS.REGISTER_ERROR,
             register: 1
@@ -35,8 +34,8 @@ export default mn.View.extend({
         ev.preventDefault();
         let user = new userModel({
             password: this.$el.find('#register-password').val(),
-            fullname: this.$el.find('#register-fullname').val(),
-            username: this.$el.find('#register-username').val()
+            displayName: this.$el.find('#register-display-name').val(),
+            email: this.$el.find('#register-email').val()
         });
         // The wrong way to validate and clear messages
         let validationErrors = user.validate(user.attributes);
@@ -61,7 +60,8 @@ export default mn.View.extend({
         let user = new userModel(attr);
         user.save({ attr }, {
             async: asyncBool,
-            success: function () {
+            success: function (ignore, response) {
+                loginRegisterMixin.successfulLogin(response);
             },
             error: function () {
                 that.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error]`).removeAttr('hidden');

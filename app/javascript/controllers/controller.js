@@ -2,6 +2,10 @@ import Marionette from 'backbone.marionette';
 import Radio      from 'backbone.radio';
 import RegisterView from '../views/register';
 import LoginView from '../views/login';
+import HomepageView from '../views/homepage';
+import jwt from 'jsonwebtoken';
+
+import { JWT_KEY } from '../common/constants';
 
 /**
  * This controller implements the route methods.
@@ -29,7 +33,27 @@ export default Marionette.Object.extend({
     },
 
     homepage () {
-        // YOU GOT TO THE HOMEPAGE
-        // this.layout.showChildView('content', new RegisterView());
+        if (!this.validateJWT()) {
+            this.login();
+            return;
+        }
+        this.layout.showChildView('content', new HomepageView());
+    },
+
+    // The backend will check the validity of the JWT, this saves from unneeded calls
+    // This function should be in auth/
+    validateJWT () {
+        let jwToken = localStorage.getItem(JWT_KEY);
+        if (jwToken === null) {
+            return false;
+        }
+        let decoded = jwt.decode(jwToken);
+        // TODO: Find a more robust way to do this
+        if (decoded !== null && decoded.exp > Math.floor(Date.now() / 1000)) {
+            return true;
+        }
+        // The JWT was invalid
+        localStorage.removeItem(JWT_KEY);
+        return false;
     }
 });

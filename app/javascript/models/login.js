@@ -10,7 +10,7 @@ import { LOGIN_CONSTANTS } from '../common/constants';
  */
 export default Model.extend({
     defaults: {
-        username: '',
+        email: '',
         password: ''
     },
     url: function () {

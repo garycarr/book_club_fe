@@ -7,12 +7,12 @@ describe('Users model test', function () {
 
     it('Create user model and validate input', function () {
         let user = new Users();
-        expect(user.get('username')).toBe('');
+        expect(user.get('email')).toBe('');
         expect(user.get('password')).toBe('');
-        expect(user.get('fullname')).toBe('');
+        expect(user.get('displayName')).toBe('');
 
         expect(user.isValid(true)).toBe(false);
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MIN));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MIN));
 
         // Still false without a password
         expect(user.isValid(true)).toBe(false);
@@ -20,20 +20,20 @@ describe('Users model test', function () {
 
         // Now false with invalid full name
         expect(user.isValid(true)).toBe(false);
-        user.set('fullname', Commmon.generateString(USER_CONSTANTS.FULLNAME_MIN));
+        user.set('displayName', Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MIN));
 
         // Now Okay
         expect(user.isValid(true)).toBe(true);
 
         // Test boundaries
         // Username
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MIN - 1));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MIN - 1));
         expect(user.isValid(true)).toBe(false);
 
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MAX + 1));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MAX + 1));
         expect(user.isValid(true)).toBe(false);
 
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MAX));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MAX));
         expect(user.isValid(true)).toBe(true);
 
         // Password
@@ -45,16 +45,16 @@ describe('Users model test', function () {
 
         // Full name
         // Password
-        user.set('fullname', Commmon.generateString(USER_CONSTANTS.FULLNAME_MIN - 1));
+        user.set('displayName', Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MIN - 1));
         expect(user.isValid(true)).toBe(false);
 
-        user.set('fullname', Commmon.generateString(USER_CONSTANTS.FULLNAME_MAX + 1));
+        user.set('displayName', Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MAX + 1));
         expect(user.isValid(true)).toBe(false);
 
         // Okay again
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MIN));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MIN));
         user.set('password', Commmon.generateString(USER_CONSTANTS.PASSWORD_MIN));
-        user.set('fullname', Commmon.generateString(USER_CONSTANTS.FULLNAME_MIN));
+        user.set('displayName', Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MIN));
         expect(user.isValid(true)).toBe(true);
     });
 

@@ -1,24 +1,23 @@
 <form id={{id}}>
   {{#if register}}
-	<label {{dataTagPrefix}}-fullname for="fullname">{{fullname}}</label>
-	<input id="{{id}}-fullname" type="text" value="" />
-	<label {{dataTagPrefix}}-error-fullname hidden>{{missingFullname}}</label>
+	<label {{dataTagPrefix}}-display-name for="display-name">{{displayName}}</label>
+	<input id="{{id}}-display-name" type="text" value="" />
+	<label {{dataTagPrefix}}-error-display-name hidden>{{missingDisplayName}}</label>
 	</br>
   {{/if}}
-  <label {{dataTagPrefix}}-username for="username">{{username}}</label>
-  <input id="{{id}}-username" type="text" value="" />
-  <label {{dataTagPrefix}}-error-username hidden>{{missingUsername}}</label>
+  <label {{dataTagPrefix}}-email for="email">{{email}}</label>
+  <input id="{{id}}-email" type="text" value="" />
+  <label {{dataTagPrefix}}-error-email hidden>{{missingEmail}}</label>
   </br>
   <label {{dataTagPrefix}}-password for="password">{{password}}</label>
   <input id="{{id}}-password" type="password" value="" />
   <label {{dataTagPrefix}}-error-password hidden>{{missingPassword}}</label>
   </br>
-  <input id="{{id}}-submit" type="submit" value="{{submit}}"
+  <button id="{{id}}-submit" type="submit">{{submit}}</button>
   </br>
   <label {{dataTagPrefix}}-error hidden>{{submitError}}</label>
+  {{#unless register}}
+	<button id="{{id}}-register" type="submit">{{registerButton}}</button>
+  {{/unless}}
+  </br>
 </form>
-<!-- {{#if registerRoute}} -->
-  <!-- <a {{dataTagPrefix}}-register-route href="webpack-dev-server/bundle#{{registerRoute}}">{{registerMessage}}</a> -->
-<!-- {{else}} -->
-  <!-- <a {{dataTagPrefix}}-login-route href="webpack-dev-server/bundle#{{loginRoute}}">{{cancelMessage}}</a> -->
-<!-- {{/if}} -->

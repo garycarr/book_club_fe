@@ -7,8 +7,9 @@ export default {
     validate: function (attrs) {
         let errors = [];
 
-        if (attrs.username.length < USER_CONSTANTS.USERNAME_MIN || attrs.username.length > USER_CONSTANTS.USERNAME_MAX) {
-            errors.push({ name: 'username', message: REGISTER_STRINGS.USERNAME_MISSING });
+        // Need to validate it is an email
+        if (attrs.email.length < USER_CONSTANTS.EMAIL_MIN || attrs.email.length > USER_CONSTANTS.EMAIL_MAX) {
+            errors.push({ name: 'email', message: REGISTER_STRINGS.EMAIL_MISSING });
         }
         if (attrs.password.length < USER_CONSTANTS.PASSWORD_MIN || attrs.password.length > USER_CONSTANTS.PASSWORD_MAX) {
             errors.push({ name: 'password', message: REGISTER_STRINGS.PASSWORD_MISSING });
@@ -17,8 +18,8 @@ export default {
     },
 
     save: function (attrs, options, model) {
-        model.set('username', model.get('username').toLowerCase());
-        attrs.attr.username = attrs.attr.username.toLowerCase();
+        model.set('email', model.get('email').toLowerCase());
+        attrs.attr.email = attrs.attr.email.toLowerCase();
         Model.prototype.save.call(model, attrs, options);
     },
 

@@ -7,12 +7,12 @@ describe('Login model test', function () {
 
     it('Create login model and validate input', function () {
         let user = new Login();
-        expect(user.get('username')).toBe('');
+        expect(user.get('email')).toBe('');
         expect(user.get('password')).toBe('');
 
         expect(user.isValid(true)).toBe(false);
 
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MIN));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MIN));
         // Still false without a password
         expect(user.isValid(true)).toBe(false);
 
@@ -21,14 +21,14 @@ describe('Login model test', function () {
         expect(user.isValid(true)).toBe(true);
 
         // Test boundaries
-        // Username
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MIN - 1));
+        // Email
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MIN - 1));
         expect(user.isValid(true)).toBe(false);
 
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MAX + 1));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MAX + 1));
         expect(user.isValid(true)).toBe(false);
 
-        user.set('username', Commmon.generateString(USER_CONSTANTS.USERNAME_MAX));
+        user.set('email', Commmon.generateString(USER_CONSTANTS.EMAIL_MAX));
         expect(user.isValid(true)).toBe(true);
 
         // Password
