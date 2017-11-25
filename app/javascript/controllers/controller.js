@@ -3,6 +3,7 @@ import Radio      from 'backbone.radio';
 import RegisterView from '../views/register';
 import LoginView from '../views/login';
 import HomepageView from '../views/homepage';
+import jwt from 'jsonwebtoken';
 
 import { JWT_KEY } from '../common/constants';
 
@@ -32,10 +33,25 @@ export default Marionette.Object.extend({
     },
 
     homepage () {
-        if (!localStorage.getItem(JWT_KEY)) {
+        if (!this.validateJWT()) {
             this.login();
             return;
         }
         this.layout.showChildView('content', new HomepageView());
+    },
+
+    // The backend will check the validity of the JWT, this saves from unneeded calls
+    validateJWT () {
+        let jwToken = localStorage.getItem(JWT_KEY);
+        if (jwToken === null) {
+            return false;
+        }
+        let decoded = jwt.decode(jwToken);
+        if (decoded !== null && decoded.exp < Date.now()) {
+            return true;
+        }
+        // The JWT was invalid
+        localStorage.removeItem(JWT_KEY);
+        return false;
     }
 });

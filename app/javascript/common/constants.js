@@ -25,6 +25,6 @@ export const JWT_KEY = 'book-jwt';
 // TODO: Environment vars should not be constants
 // but they will do for now
 export const ENV_CONSTANTS = {
-    // API_HOSTNAME: 'http://bookclubbackend-env.sa-east-1.elasticbeanstalk.com'
+    // API_HOSTNAME: 'http://elasticbeanstalk.com'
     API_HOSTNAME: 'http://localhost:8080'
 };
