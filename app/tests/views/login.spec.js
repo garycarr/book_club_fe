@@ -30,9 +30,9 @@ describe('Login view test', function () {
 
     it('should fail validation for login', function () {
         let loginView = new LoginView();
-        loginView.render();
         let spyLogin = sinon.spy(loginView, 'login');
         let spyPostLogin = sinon.spy(loginView, 'postLogin');
+        loginView.render();
         // Initially the error messages should be hidden
         expect(loginView.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error-email]`).attr('hidden')).toBe('hidden');
         expect(loginView.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error-password]`).attr('hidden')).toBe('hidden');
@@ -44,7 +44,7 @@ describe('Login view test', function () {
         expect(loginView.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error-password]`).attr('hidden')).toBe(undefined);
 
         expect(spyPostLogin.calledOnce).toBe(false);
-        expect(spyLogin.calledOnce).toBe(false); // TODO this should be true
+        expect(spyLogin.called).toBe(false); // TODO this should be true??? ev.preventDefault?
 
         loginView.$el.find('#login-email').val(Commmon.generateString(USER_CONSTANTS.EMAIL_MIN - 1));
         loginView.$el.find('#login-password').val(Commmon.generateString(USER_CONSTANTS.PASSWORD_MIN));
@@ -67,31 +67,32 @@ describe('Login view test', function () {
 
         loginView.render();
 
-        let stub = sinon.spy(loginView, 'postLogin');
+        let postLoginSpy = sinon.spy(loginView, 'postLogin');
 
         loginView.$el.find('#login-email').val(email);
         loginView.$el.find('#login-password').val(password);
         loginView.$el.find('#login-submit').click();
-        stub.restore();
-        sinon.assert.calledOnce(stub);
-        sinon.assert.calledWith(stub, { email:email, password:password });
+        sinon.assert.calledOnce(postLoginSpy);
+        sinon.assert.calledWith(postLoginSpy, { email:email, password:password });
+        postLoginSpy.restore();
     });
 
     it('should successfully login', function () {
-        let id = '12b',
-            loginView = new LoginView(),
+        let loginView = new LoginView(),
             lowerCaseEmail = 'john@example.com',
             password = 'abcdef',
             upperCaseEmail = 'John@example.com';
 
         this.server.respondWith('POST', LOGIN_STRINGS.URL,
             [200, { 'Content-Type': 'application/json' },
-                `{ "id": "${id}" }`]);
+                '{ "token": "jsonwebtoken" }']);
 
         loginView.render();
 
+        let localStorageSpy = sinon.spy(localStorage, 'setItem');
         let ajaxSpy = sinon.spy($, 'ajax');
         loginView.postLogin({ email: upperCaseEmail, password: password }, false);
+        expect(this.server.requestedOnce).toBe(true);
 
         expect(ajaxSpy.calledOnce).toBe(true);
         expect(ajaxSpy.getCall(0).args[0].type).toBe('POST');
@@ -106,7 +107,9 @@ describe('Login view test', function () {
         expect(data.email).toBe(lowerCaseEmail);
         expect(data.password).toBe(password);
         ajaxSpy.restore();
-        // TODO - actions after login
+
+        expect(localStorageSpy.calledOnce).toBe(true);
+        localStorageSpy.restore();
     });
 
     it('should fail to login and display an error', function () {
@@ -115,7 +118,7 @@ describe('Login view test', function () {
             password = 'wrong pass';
 
         this.server.respondWith('POST', LOGIN_STRINGS.URL,
-            [404, { 'Content-Type': 'application/json' },
+            [401, { 'Content-Type': 'application/json' },
                 '']);
 
         loginView.render();
@@ -124,6 +127,7 @@ describe('Login view test', function () {
         loginView.postLogin({ email: email, password: password }, false);
 
         expect(ajaxSpy.calledOnce).toBe(true);
+        expect(this.server.requestedOnce).toBe(true);
 
         // Check login error shows
         expect(loginView.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error]`).attr('hidden')).toBe(undefined);
@@ -137,7 +141,7 @@ describe('Login view test', function () {
             password = 'wrong pass';
 
         this.server.respondWith('POST', LOGIN_STRINGS.URL,
-            [404, { 'Content-Type': 'application/json' },
+            [401, { 'Content-Type': 'application/json' },
                 '']);
 
         loginView.render();
@@ -146,6 +150,7 @@ describe('Login view test', function () {
         loginView.postLogin({ email: email, password: password }, false);
 
         expect(ajaxSpy.calledOnce).toBe(true);
+        expect(this.server.requestedOnce).toBe(true);
 
         expect(loginView.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error]`).attr('hidden')).toBe(undefined);
         ajaxSpy.restore();

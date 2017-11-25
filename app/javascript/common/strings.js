@@ -13,7 +13,6 @@ export const HOMEPAGE_STRINGS = {
     WELCOME_MESSAGE: 'Welcome back!'
 };
 
-
 export const LOGIN_STRINGS = {
     DATA_TAG_PREFIX: 'data-login',
     EMAIL_MISSING: 'Please enter correct length email',

@@ -30,22 +30,21 @@ describe('Register view test', function () {
 
         registerView.$el.find('#register-email').val(Commmon.generateString(USER_CONSTANTS.EMAIL_MIN));
         registerView.$el.find('#register-password').val(Commmon.generateString(USER_CONSTANTS.PASSWORD_MIN));
-        registerView.$el.find('#register-display-name').val(Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MIN - 1)); // full name too short
+        registerView.$el.find('#register-display-name').val(Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MIN - 1)); // displayName too short
         registerView.$el.find('#register-submit').click();
 
         expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-email]`).attr('hidden')).toBe('hidden');
         expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-password]`).attr('hidden')).toBe('hidden');
         expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-display-name]`).attr('hidden')).toBe(undefined);
 
-        // registerView.$el.find('#register-email').val(Commmon.generateString(USER_CONSTANTS.EMAIL_MIN));
-        // registerView.$el.find('#register-password').val(Commmon.generateString(USER_CONSTANTS.PASSWORD_MIN - 1));
-        // registerView.$el.find('#register-display-name').val(Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MIN - 1)); // full name too short
-        // registerView.$el.find('#register-submit').click();
-        //
-        // expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-email]`).attr('hidden')).toBe('hidden');
-        // expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-password]`).attr('hidden')).toBe(undefined);
-        // expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-display-name]`).attr('hidden')).toBe(undefined);
-        //
+        registerView.$el.find('#register-email').val(Commmon.generateString(USER_CONSTANTS.EMAIL_MIN));
+        registerView.$el.find('#register-password').val(Commmon.generateString(USER_CONSTANTS.PASSWORD_MIN - 1)); // password too short
+        registerView.$el.find('#register-display-name').val(Commmon.generateString(USER_CONSTANTS.DISPLAY_NAME_MIN - 1)); // displayName too short
+        registerView.$el.find('#register-submit').click();
+
+        expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-email]`).attr('hidden')).toBe('hidden');
+        expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-password]`).attr('hidden')).toBe(undefined);
+        expect(registerView.$el.find(`label[${REGISTER_STRINGS.DATA_TAG_PREFIX}-error-display-name]`).attr('hidden')).toBe(undefined);
 
         expect(spyPostRegister.calledOnce).toBe(false);
     });
@@ -58,33 +57,34 @@ describe('Register view test', function () {
 
         registerView.render();
 
-        let stub = sinon.spy(registerView, 'postRegister');
+        let postRegisterSpy = sinon.spy(registerView, 'postRegister');
         registerView.$el.find('#register-email').val(email);
         registerView.$el.find('#register-password').val(password);
         registerView.$el.find('#register-display-name').val(displayName);
         registerView.$el.find('#register-submit').click();
-        stub.restore();
-        sinon.assert.calledOnce(stub);
-        sinon.assert.calledWith(stub, { email:email, password:password, displayName:displayName });
+        postRegisterSpy.restore();
+        sinon.assert.calledOnce(postRegisterSpy);
+        sinon.assert.calledWith(postRegisterSpy, { email:email, password:password, displayName:displayName });
     });
 
     it('should successfully register', function () {
         let displayName = 'John Smith',
-            id = '12b',
             lowerCaseEmail = 'john@example.com',
             password = 'abcdef',
             registerView = new RegisterView(),
             upperCaseEmail = 'John@example.com';
 
-        this.server.respondWith('POST', REGISTER_CONSTANTS.PATH,
-            [200, { 'Content-Type': 'application/json' },
-                `{ "id": "${id}" }`]);
+        this.server.respondWith('POST', REGISTER_CONSTANTS.URL,
+            [201, { 'Content-Type': 'application/json' },
+                '{ "token": "jsonWebTokenRegister" }']);
 
         registerView.render();
 
+        let localStorageSpy = sinon.spy(localStorage, 'setItem');
         let ajaxSpy = sinon.spy($, 'ajax');
         registerView.postRegister({ email: upperCaseEmail, password: password, displayName: displayName }, false);
 
+        expect(this.server.requestedOnce).toBe(true);
         expect(ajaxSpy.calledOnce).toBe(true);
         expect(ajaxSpy.getCall(0).args[0].type).toBe('POST');
         expect(ajaxSpy.getCall(0).args[0].contentType).toBe('application/json');
@@ -96,11 +96,14 @@ describe('Register view test', function () {
         hackedURL = hackedURL.replace('/api', '');
         expect(ajaxSpy.getCall(0).args[0].url).toBe(hackedURL);
 
+
         let data = JSON.parse(ajaxSpy.getCall(0).args[0].data);
         expect(data.email).toBe(lowerCaseEmail);
         expect(data.password).toBe(password);
+
         ajaxSpy.restore();
-        // TODO - actions after register
+        expect(localStorageSpy.calledOnce).toBe(true);
+        localStorageSpy.restore();
     });
 
     it('should fail to register and display an error', function () {
@@ -110,7 +113,7 @@ describe('Register view test', function () {
             registerView = new RegisterView();
 
         this.server.respondWith('POST', REGISTER_CONSTANTS.PATH,
-            [404, { 'Content-Type': 'application/json' },
+            [400, { 'Content-Type': 'application/json' },
                 '']);
 
         registerView.render();
@@ -133,7 +136,7 @@ describe('Register view test', function () {
             registerView = new RegisterView();
 
         this.server.respondWith('POST', REGISTER_CONSTANTS.PATH,
-            [404, { 'Content-Type': 'application/json' },
+            [400, { 'Content-Type': 'application/json' },
                 '']);
 
         registerView.render();

@@ -3,11 +3,9 @@ import loginModel from '../models/login';
 import template from '../templates/partials/login-register.hbs';
 import loginRegisterMixin from './mixins/login-register';
 import Radio from 'backbone.radio';
+const channel = Radio.channel('application');
 
 import { LOGIN_STRINGS } from '../common/strings';
-import { JWT_KEY } from '../common/constants';
-
-const channel = Radio.channel('application');
 
 export default mn.View.extend({
     tagName: 'div',
@@ -66,8 +64,7 @@ export default mn.View.extend({
         login.save({ attr }, {
             async: asyncBool,
             success: function (ignore, response) {
-                localStorage.setItem(JWT_KEY, response.token);
-                channel.trigger('nav:homepage');
+                loginRegisterMixin.successfulLogin(response);
             },
             error: function (ignore, response) {
                 let selector = that.$el.find(`label[${LOGIN_STRINGS.DATA_TAG_PREFIX}-error]`);

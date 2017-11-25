@@ -1,4 +1,8 @@
 import $ from 'jquery';
+import Radio from 'backbone.radio';
+const channel = Radio.channel('application');
+
+import { JWT_KEY } from '../../common/constants';
 
 export default {
     removeErrorMessages: function (el, dataPrefix, attrs) {
@@ -11,6 +15,11 @@ export default {
         validationErrors.forEach(function (error) {
             el.find(`label[${dataPrefix}-error-${error.name}]`).removeAttr('hidden');
         });
+    },
+    successfulLogin: function (response) {
+        localStorage.setItem(JWT_KEY, response.token);
+        channel.trigger('nav:homepage');
     }
+
 
 };

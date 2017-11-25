@@ -41,13 +41,15 @@ export default Marionette.Object.extend({
     },
 
     // The backend will check the validity of the JWT, this saves from unneeded calls
+    // This function should be in auth/
     validateJWT () {
         let jwToken = localStorage.getItem(JWT_KEY);
         if (jwToken === null) {
             return false;
         }
         let decoded = jwt.decode(jwToken);
-        if (decoded !== null && decoded.exp < Date.now()) {
+        // TODO: Find a more robust way to do this
+        if (decoded !== null && decoded.exp > Math.floor(Date.now() / 1000)) {
             return true;
         }
         // The JWT was invalid
